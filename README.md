@@ -12,8 +12,8 @@ This project builds a **hybrid movie recommendation system** using the MovieLens
 The system combines:
 
 - **Collaborative Filtering (SVD)** → learns hidden user preferences from rating behavior  
-- **Machine Learning Models (Ridge Regression)** → uses structured features such as genres, user behavior, and movie popularity  
-- **Hybrid Approach** → blends both methods for improved prediction accuracy and recommendation quality  
+- **Machine Learning Models** → use structured features such as genres, user behavior, and movie popularity  
+- **Hybrid Approach (in progress)** → will blend both methods for improved prediction accuracy and recommendation quality  
 
 ---
 
@@ -49,7 +49,7 @@ Key findings:
 
 ---
 
-## 🤖 Models Built
+## 🤖 Models Built (Current Progress)
 
 ### 1. Collaborative Filtering (SVD)
 
@@ -75,29 +75,46 @@ RMSE: **0.8653**
 
 ---
 
-## 🔀 Hybrid Approach
+## 🔄 Current Stage
+
+We are currently expanding the feature-based modeling approach by testing additional machine learning models:
+
+- ✅ Ridge Regression (completed)  
+- 🔄 Random Forest Regressor (next)  
+- 🔄 XGBoost Regressor (next)  
+
+Each model will be evaluated using RMSE, and the best-performing model will be selected for integration into the hybrid system.
+
+---
+
+## 🔀 Hybrid Approach (Next Step)
 
 Instead of choosing one model, this project follows a **hybrid recommendation strategy**:
 
 - SVD captures **behavioral patterns**
-- Ridge captures **feature-based patterns**
+- Machine learning models capture **feature-based patterns**
 
-These can be combined to improve predictions:
-hybrid_score = 0.7 * svd_prediction + 0.3 * ridge_prediction
+The final hybrid model will combine both:
+hybrid_score = w1 * svd_prediction + w2 * ml_prediction
 
+
+This approach aims to improve:
+- prediction accuracy  
+- recommendation quality  
+- performance on sparse and long-tail data  
 
 ---
 
 ## 📈 Evaluation
 
-Model performance was evaluated using **RMSE (Root Mean Squared Error)**:
+Model performance is evaluated using **RMSE (Root Mean Squared Error)**:
 
 | Model | RMSE |
 |------|------|
 | SVD | 0.8525 |
 | Ridge Regression | 0.8653 |
 
-👉 SVD performs better overall, but Ridge adds valuable signal for hybrid modeling.
+👉 SVD currently performs best, but ML models add valuable signal for hybrid modeling.
 
 ---
 
@@ -105,18 +122,20 @@ Model performance was evaluated using **RMSE (Root Mean Squared Error)**:
 
 - Collaborative filtering captures deep user behavior patterns  
 - Feature-based models provide stability and interpretability  
-- Hybrid systems outperform single-method approaches  
-- Sparse datasets require models that can generalize effectively  
+- Hybrid systems combine strengths of both approaches  
+- Sparse datasets require models that generalize effectively  
 
 ---
 
-## 🚀 Future Improvements
+## 🚀 Next Steps
 
-- Add **Random Forest and XGBoost** models  
-- Build full **hybrid recommendation pipeline**  
-- Deploy using **Streamlit (Top-N recommendations UI)**  
+- Train **Random Forest Regressor**  
+- Train **XGBoost Regressor**  
+- Compare all ML model performance  
+- Build **hybrid recommendation system**  
+- Generate Top-N hybrid recommendations  
+- Deploy results in a **Streamlit app**  
 - Scale pipeline using **Databricks + Spark (medallion architecture)**  
-- Convert predictions into a **“recommendation score / odds-style system”**
 
 ---
 
@@ -150,3 +169,4 @@ It demonstrates:
 ## 👤 Author
 
 Ethan Terzic, Hanna Kovacevic, Emma Kovacevic
+
