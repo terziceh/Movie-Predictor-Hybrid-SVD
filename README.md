@@ -1,19 +1,19 @@
 # 🎬 Hybrid Movie Recommendation System
 
-📎 **Colab Notebook (Full Project)**  
+📎 **Colab Notebook (Full Project)**
 https://colab.research.google.com/drive/1WnH8d590LNreXpXnvEcJnWX0ea4ENHK5#scrollTo=tpUvZDqrfVvZ
 
 ---
 
 ## 🧠 Overview
 
-This project builds a **hybrid movie recommendation system** using the MovieLens dataset. The goal is to predict how users would rate movies they have not seen and generate personalized recommendations.
+This project builds a **hybrid movie recommendation system** using the MovieLens dataset. The goal is to predict how users would rate unseen movies and generate personalized recommendations.
 
 The system combines:
 
-- **Collaborative Filtering (SVD)** → learns hidden user preferences from rating behavior  
-- **Machine Learning Models** → use structured features such as genres, user behavior, and movie popularity  
-- **Hybrid Approach (in progress)** → will blend both methods for improved prediction accuracy and recommendation quality  
+* **Collaborative Filtering (SVD)** → learns latent user preferences from rating behavior
+* **Machine Learning Models (XGBoost, Ridge)** → capture structured relationships using genres, popularity, and user behavior
+* **Hybrid Ranking System** → blends behavioral and feature-based predictions with additional ranking constraints
 
 ---
 
@@ -21,19 +21,20 @@ The system combines:
 
 Build an end-to-end recommendation system that:
 
-- Understands user preferences from sparse rating data  
-- Predicts unseen ratings  
-- Generates Top-N movie recommendations  
-- Combines behavioral and feature-based modeling  
+* Learns user preferences from highly sparse data
+* Predicts unseen ratings with strong generalization
+* Generates Top-N personalized recommendations
+* Combines collaborative filtering and feature-based modeling
+* Applies ranking logic to improve real-world recommendation quality
 
 ---
 
 ## 📊 Dataset
 
-- **Source:** MovieLens Dataset  
-- ~790,000 ratings  
-- 5,000 users  
-- ~24,000 movies  
+* **Source:** MovieLens Dataset
+* ~790,000 ratings
+* 5,000 users
+* ~24,000 movies
 
 ---
 
@@ -41,132 +42,137 @@ Build an end-to-end recommendation system that:
 
 Key findings:
 
-- **Rating Bias:** Most ratings fall between 3.0–4.5  
-- **Sparsity:** ~99% of user–movie interactions are missing  
-- **User Activity:** Highly skewed (few power users)  
-- **Movie Popularity:** Long-tail distribution (many movies have very few ratings)  
-- **Genre Patterns:** Certain genres (Drama, Crime, War) tend to have higher average ratings  
+* **Rating Bias:** Most ratings fall between 3.0–4.5
+* **Sparsity:** ~99% of user–movie interactions are missing
+* **User Activity:** Highly skewed (few power users dominate ratings)
+* **Movie Popularity:** Long-tail distribution (many movies have very few ratings)
+* **Genre Patterns:** Certain genres (Drama, Crime, War) trend higher in ratings
 
 ---
 
-## 🤖 Models Built (Current Progress)
+## 🤖 Models Built
 
 ### 1. Collaborative Filtering (SVD)
 
-- Learns latent user preferences and movie characteristics  
-- Uses matrix factorization to predict unseen ratings  
+* Matrix factorization using the Surprise library
+* Learns latent user and item embeddings
 
-**Result:**  
-RMSE: **0.8525**
-
----
-
-### 2. Feature-Based Model (Ridge Regression)
-
-- Uses:
-  - Genre encoding  
-  - User-level features (avg rating, activity)  
-  - Movie-level features (popularity, avg rating)  
-
-- Applies regularization to prevent overfitting  
-
-**Result:**  
-RMSE: **0.8653**
+**Result:**
+RMSE: **~0.63**
 
 ---
 
-## 🔄 Current Stage
+### 2. Feature-Based Models
 
-We are currently expanding the feature-based modeling approach by testing additional machine learning models:
+* **Ridge Regression**
+* **Random Forest**
+* **XGBoost (best ML model)**
 
-- ✅ Ridge Regression (completed)  
-- 🔄 Random Forest Regressor (next)  
-- 🔄 XGBoost Regressor (next)  
+Features include:
 
-Each model will be evaluated using RMSE, and the best-performing model will be selected for integration into the hybrid system.
+* Genre encoding
+* User-level aggregates (avg rating, activity)
+* Movie-level aggregates (popularity, avg rating)
+
+**Best ML Result (XGBoost):**
+RMSE: **~0.85**
 
 ---
 
-## 🔀 Hybrid Approach (Next Step)
+## 🔀 Hybrid Model
 
-Instead of choosing one model, this project follows a **hybrid recommendation strategy**:
+The final system combines SVD and XGBoost:
 
-- SVD captures **behavioral patterns**
-- Machine learning models capture **feature-based patterns**
+```python
+hybrid_score = w1 * svd_prediction + w2 * xgb_prediction
+```
 
-The final hybrid model will combine both:
-hybrid_score = w1 * svd_prediction + w2 * ml_prediction
+Initial optimization favored SVD heavily, but hybrid scoring was retained to:
 
+* Improve cold-start handling
+* Incorporate feature-based signals
+* Enable more flexible ranking
 
-This approach aims to improve:
-- prediction accuracy  
-- recommendation quality  
-- performance on sparse and long-tail data  
+---
+
+## 🧠 Recommendation System Design
+
+Beyond prediction, a full **ranking system** was built to improve recommendation quality:
+
+* ✅ **Hybrid scoring (SVD + XGBoost)**
+* ✅ **Genre preference integration (soft + constrained)**
+* ✅ **Popularity filtering (300+ ratings)**
+* ✅ **Franchise diversity constraint** (prevents repetition)
+* ✅ **Interactive user input (rate/skip system)**
+
+This transforms the model from a predictor into a **product-style recommender system**.
 
 ---
 
 ## 📈 Evaluation
 
-Model performance is evaluated using **RMSE (Root Mean Squared Error)**:
+| Model   | RMSE  |
+| ------- | ----- |
+| SVD     | ~0.63 |
+| XGBoost | ~0.85 |
+| Hybrid  | ~0.68 |
 
-| Model | RMSE |
-|------|------|
-| SVD | 0.8525 |
-| Ridge Regression | 0.8653 |
-
-👉 SVD currently performs best, but ML models add valuable signal for hybrid modeling.
+**Key Insight:**
+SVD performs best on known users, while hybrid modeling improves flexibility and system design.
 
 ---
 
 ## 🎯 Key Takeaways
 
-- Collaborative filtering captures deep user behavior patterns  
-- Feature-based models provide stability and interpretability  
-- Hybrid systems combine strengths of both approaches  
-- Sparse datasets require models that generalize effectively  
+* Collaborative filtering captures deep behavioral patterns
+* Feature-based models add stability and interpretability
+* Hybrid systems enable real-world recommendation flexibility
+* Ranking logic is just as important as prediction accuracy
+* Sparse datasets require careful generalization strategies
 
 ---
 
 ## 🚀 Next Steps
 
-- Train **Random Forest Regressor**  
-- Train **XGBoost Regressor**  
-- Compare all ML model performance  
-- Build **hybrid recommendation system**  
-- Generate Top-N hybrid recommendations  
-- Deploy results in a **Streamlit app**  
-- Scale pipeline using **Databricks + Spark (medallion architecture)**  
+* Refactor and clean code for readability and modular design
+* Convert the notebook into an interactive **Streamlit application**
+* Rebuild the pipeline in **Databricks using Spark (medallion architecture)**
+* Simulate a full production system with scalable data pipelines
+* Extend the project into a **PrizePicks-style prediction app** (portfolio concept)
 
 ---
 
 ## 🧩 Tech Stack
 
-- Python  
-- pandas, NumPy  
-- scikit-learn  
-- Surprise (SVD)  
-- Matplotlib  
+* Python
+* pandas, NumPy
+* scikit-learn
+* XGBoost
+* Surprise (SVD)
+* Matplotlib
 
 ---
 
 ## 💡 Why This Project Matters
 
-This project mirrors real-world recommendation systems used by:
+This project mirrors real-world systems used by:
 
-- Netflix  
-- Spotify  
-- Amazon  
+* Netflix
+* Spotify
+* Amazon
 
 It demonstrates:
 
-- End-to-end data science workflow  
-- Model comparison and evaluation  
-- Hybrid system design  
-- Product-level thinking  
+* End-to-end data science workflow
+* Model comparison and evaluation
+* Hybrid system architecture
+* Ranking system design
+* Product-level thinking
 
 ---
 
 ## 👤 Author
 
 Ethan Terzic, Hanna Kovacevic, Emma Kovacevic
+
 
