@@ -132,16 +132,6 @@ SVD performs best on known users, while hybrid modeling improves flexibility and
 
 ---
 
-## 🚀 Next Steps
-
-* Refactor and clean code for readability and modular design
-* Convert the notebook into an interactive **Streamlit application**
-* Rebuild the pipeline in **Databricks using Spark (medallion architecture)**
-* Simulate a full production system with scalable data pipelines
-* Extend the project into a **PrizePicks-style prediction app** (portfolio concept)
-
----
-
 ## 🧩 Tech Stack
 
 * Python
@@ -170,6 +160,87 @@ It demonstrates:
 * Product-level thinking
 
 ---
+
+## 🚀 Future Model for Streamlit
+
+movie-recommender-app/
+│
+├── app.py
+│   └── Streamlit app logic:
+│       - loads data and models
+│       - lets user select genres
+│       - lets user rate 5 movies
+│       - runs hybrid recommendation logic
+│       - displays top 5 recommendations
+│
+├── data/
+│   ├── model_df.pkl
+│   │   └── final modeling dataframe
+│   │       - movieId
+│   │       - userId
+│   │       - rating
+│   │       - title
+│   │       - genre columns
+│   │       - engineered movie/user features
+│   │
+│   └── ratings_df.pkl
+│       └── original ratings data used to retrain SVD
+│           - userId
+│           - movieId
+│           - rating
+│
+├── models/
+│   └── xgb_model.pkl
+│       └── trained XGBoost model
+│           - predicts rating from movie/user/genre features
+│
+└── requirements.txt
+    └── app dependencies:
+        - streamlit
+        - pandas
+        - numpy
+        - scikit-surprise
+        - scikit-learn
+        - xgboost
+        - joblib
+
+The app flow should be:
+
+User opens Streamlit app
+        ↓
+App loads model_df, ratings_df, and xgb_model
+        ↓
+User selects 3 preferred genres
+        ↓
+App filters popular movies from those genres
+        ↓
+User rates 5 movies
+        ↓
+App creates a temporary new user profile
+        ↓
+SVD retrains with the new user's 5 ratings
+        ↓
+App scores candidate movies using:
+    - SVD collaborative filtering score
+    - XGBoost feature prediction score
+    - genre preference boost
+        ↓
+App filters out:
+    - movies already rated
+    - unpopular movies below rating-count threshold
+    - repeat franchise/family recommendations
+        ↓
+App returns top 5 personalized recommendations
+
+Your hybrid recommendation formula is basically:
+
+hybrid_score =
+    75% SVD score
+    + 25% XGBoost score
+
+final_score =
+    hybrid_score
+    + genre preference boost
 
 ## 👤 Author
 
